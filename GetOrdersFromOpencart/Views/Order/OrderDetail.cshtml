@@ -1,0 +1,117 @@
+﻿@model Order
+
+@{int count = 0; }
+
+<div class="">
+
+    @*<app>
+
+        <component type="typeof(Counter)" render-mode="ServerPrerendered" />
+    </app>*@
+
+    <form class="m-1 p-1" method="post" asp-action="OrderDetail" asp-controller="Order">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <input class="form-control" type="hidden" asp-for="@Model.Order_id" />
+        <input readonly class="btn btn-success" type="datetime" asp-for="@Model.Date_added" value="@Model.Date_added.ToString(System.Globalization.CultureInfo.GetCultureInfo("uk-UA"))" />
+        <input class="btn btn-light" type="text" asp-for="@Model.Firstname" />
+        <input class="btn btn-light" type="text" asp-for="@Model.Lastname" />
+        <input class="btn btn-light" type="text" asp-for="@Model.Shipping_city" />
+        <input class="btn btn-light" type="text" asp-for="@Model.Shipping_address_1" />
+        <input class="btn btn-light" type="text" asp-for="@Model.Telephone" />
+        <textarea class="btn btn-light text-left" asp-for="@Model.Comment"></textarea>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-1">№</div>
+                <div class="col-6">Название</div>
+                <div class="col-sm">Артикул</div>
+                <div class="col-sm">Цена</div>
+                <div class="col-sm">Количество</div>
+                <div class="col-sm">Стоимость</div>
+                <div class="col-sm">+</div>
+            </div>
+        </div>
+
+
+        @foreach (GoodInOrder good in @Model.ListGoods)
+        {
+            <div id="list" class="container-fluid">
+                <div class="row">
+                    <div class="col-1">
+                        @(count+1)
+                    </div>
+                    <div class="col-6">
+                        <input class="form-control" type="text" name="[@count].good.Name" asp-for="@good.Name" />
+                    </div>
+                    <div class="col-1">
+                        <input readonly class="form-control" type="text" name="[@count].good.Model" asp-for="@good.Model" />
+                    </div>
+                    <div class="col-1">
+                        <input readonly class="form-control" name="[@count].good.Price" asp-for="@good.Price" />
+                    </div>
+                    <div class="col-1">
+                        <input class="form-control" type="number" name="[@count].good.Quantity" asp-for="@good.Quantity" />
+                    </div>
+                    <div class="col-1">
+                        <input readonly class="form-control" name="[@count].good.Total" asp-for="@good.Total" />
+                    </div>
+                    <div id="add-new" class="col-1 btn btn-danger">Add New</div>
+
+                </div>
+            </div>
+            @if (!string.IsNullOrEmpty(@good.ForWho))
+            {
+                <label asp-for="@good.ForWho">
+                    <input readonly type="text" name="[@count].good.ForWho" asp-for="@good.ForWho" />
+                </label>
+                <label asp-for="@good.Large">
+                    <input readonly type="text" name="[@count].good.Large" asp-for="@good.Large" />
+                </label>
+            }
+            count++;
+
+        }
+        <br />
+        <a class="btn btn-danger" asp-action="" asp-controller="">Удалить</a>
+        <button class="btn btn-success" type="submit">Сохранить</button>
+    </form>
+
+
+</div>
+@*<div id="ddd">текст в диве, который буду обрабатывать</div>*@
+@section scripts
+{
+    <script>
+        $("#add-new").click(function () {
+            alert("добавляю новую строку для товара");
+
+            var modulHtml = '<div class="row">';
+            modulHtml += '<div class="col-1">@(count+1)</div>';
+            modulHtml += '<div class="col-6"><input class="form-control" type="text" name="[@count].good.Name" asp-for="" /></div>';
+            modulHtml += '<div class="col-1"><input readonly class="form-control" type="text" name="[@count].good.Model" asp-for="" /></div>';
+            modulHtml += '<div class="col-1"><input readonly class="form-control" name="[@count].good.Price" asp-for="" /></div>';
+            modulHtml += '<div class="col-1"><input class="form-control" type="number" name="[@count].good.Quantity" asp-for="" /></div>';
+            modulHtml += '<div class="col-1"><input class="form-control" type="number" name="[@count].good.Total" asp-for="" /></div>';
+            modulHtml += '<div id="add-new" class="col-1 btn btn-danger">Add New</div>';
+            modulHtml += '</div>';
+            $("#list:last").append(modulHtml);
+
+           
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $
+        });
+    </script>
+
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="/_framework/blazor.server.js"></script>
+}
+
+@section basehref
+{
+    <base href="~/" />
+}

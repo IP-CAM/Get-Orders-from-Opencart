@@ -1,0 +1,44 @@
+﻿@model IEnumerable<OrderWithGoods>
+
+@{
+    ViewData["Title"] = "ListOrder";
+}
+
+<h1>список заказов</h1>
+
+<table class="table table-borderless table-sm">
+    <thead>
+        <tr>
+            <th scope="col">№</th>
+            <th scope="col">Имя</th>
+            <th scope="col">Фамилия</th>
+            <th scope="col">Телефон</th>
+            <th scope="col">Город</th>
+            <th scope="col">Адрес</th>
+            <th scope="col">Дата</th>
+            <th scope="col" class="text-center">Комментарий</th>
+            <th scope="col">Инфо</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (OrderWithGoods item in Model)
+        {
+        <tr class="table-primary">
+            <td>@item.Order.Order_id</td>
+            <td>@item.Order.Firstname</td>
+            <td>@item.Order.Lastname</td>
+            <td>@item.Order.Telephone</td>
+            <td>@item.Order.Shipping_city</td>
+            <td>@item.Order.Shipping_address_1</td>
+            <td>@item.Order.Date_added.ToString(System.Globalization.CultureInfo.GetCultureInfo("uk-UA"))</td>
+            <td>@item.Order.Comment</td>
+            <td><a asp-action="OrderDetail" asp-controller="Order" asp-route-id="@item.Order.Order_id" class="btn btn-info btn-sm">В заказ</a></td>
+        </tr>
+            @foreach (GoodInOrder products in @item.GoodsInOrder)
+            {
+                @await Component.InvokeAsync(nameof(GetGoods), @products.OrderId)
+            }
+
+        }
+    </tbody>
+</table>

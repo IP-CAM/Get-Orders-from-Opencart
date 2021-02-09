@@ -1,0 +1,37 @@
+﻿@page "/startMessage"
+@using GetOrdersFromOpencart.Infrastructure
+@implements IDisposable
+@inject SendBlazorService Notifier
+
+<h3>StartMessages</h3>
+<button @onclick="Start">запустить отслеживание</button>
+<p>последняя проверка выполнена была: @Vremya</p>
+@code {
+
+    public void Start()
+    {
+        Notifier.StartTimer();
+    }
+
+    public DateTime Vremya { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Notifier.vremyaProverki += Realization;
+    }
+
+    public async Task Realization(DateTime dateTime)
+    {
+        await InvokeAsync(() =>
+
+        {
+            Vremya = dateTime;
+            StateHasChanged();
+        });
+    }
+
+    public void Dispose()
+    {
+        Notifier.vremyaProverki -= Realization;
+    }
+}

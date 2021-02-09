@@ -1,0 +1,15 @@
+﻿@model IEnumerable<Good>
+
+@foreach (Good good in Model)
+{
+    <tr>
+        <td>@good.Articul</td>
+        <td>@good.Name</td>
+        <td>@good.ForWho</td>
+        <td>@good.Large</td>
+        <td>Цена: @good.Price.ToString("#,##")</td>
+        <td>Кол-во: @good.Quantity.ToString("#,##")</td>
+        <td>Итого: @((@good.Quantity * @good.Price).ToString("#,##"))</td>
+
+    </tr>
+}

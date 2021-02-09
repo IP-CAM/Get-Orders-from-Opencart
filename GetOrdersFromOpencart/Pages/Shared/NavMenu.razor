@@ -1,0 +1,38 @@
+﻿<div class="">
+    <a class="" href="">BlazorServerApp1</a>
+    <button class="" @onclick="ToggleNavMenu">
+        <span class=""></span>
+    </button>
+</div>
+
+<div class="" @onclick="ToggleNavMenu">
+    <ul class="">
+        <li class="">
+            <NavLink class="" href="/Home/Pag">
+                <span class="" aria-hidden="true"></span> Home
+            </NavLink>
+        </li>
+        <li class="">
+            <NavLink class="" href="/Home/Counter">
+                <span class="" aria-hidden="true"></span> Counter
+            </NavLink>
+        </li>
+        <li class="">
+            <NavLink class="" href="/Home/Index">
+                <span class="" aria-hidden="true"></span> Index data
+            </NavLink>
+        </li>
+    </ul>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}
+ 

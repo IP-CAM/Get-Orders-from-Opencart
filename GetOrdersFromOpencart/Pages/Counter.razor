@@ -1,0 +1,60 @@
+﻿@page "/Home/Counter"
+@using GetOrdersFromOpencart.Model
+@inject IRepository repository
+
+
+<h1>Counter</h1>
+
+<p>Current count: @currentCount</p>
+
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+<input type="text" @bind="CurrentValue" />
+
+<div class="content px-4">
+    <select id="Name" name="Name">
+        @if (GetListName().Count > 0)
+        {
+            @foreach (var item in GetListName())
+            {
+                <option value="@item">@item</option>
+            }
+        }
+        else
+        {
+            <option value="Ноль результатов">Ничего не найдено</option>
+        }
+    </select>
+</div>
+
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    private string CurrentValue { get; set; }
+
+    private List<string> GetListName()
+    {
+        List<string> listSearched = new List<string>();
+        if (CurrentValue != null)
+        {
+
+
+            IEnumerable<Good> list = repository.GetListGoodsBySearch(CurrentValue);
+            foreach (Good good in list)
+            {
+                if (good.Name.Contains(CurrentValue, StringComparison.OrdinalIgnoreCase))
+                {
+                    listSearched.Add(good.Name);
+                }
+            }
+        }
+        return listSearched;
+    }
+}

@@ -1,0 +1,9 @@
+﻿@if (User?.Identity?.IsAuthenticated ?? false)
+{
+    <a asp-controller="Account" asp-action="Logout" class="btn btn-danger">Выйти</a>
+}
+else if (!Context.Request.HttpContext.Request.Path.Equals(PathString.FromUriComponent("/Account/Login")))
+{
+    <a asp-controller="Account" asp-action="Login" class="btn btn-danger">Войти</a>
+}
+ 
